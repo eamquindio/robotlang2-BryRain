@@ -1,0 +1,114 @@
+{
+  "tests": [
+    {
+      "name": "01. Grammar File Exists",
+      "setup": "",
+      "run": "test -f src/main/antlr4/edu/eam/ingesoft/tlf/RoboLang.g4 && echo 'PASS: RoboLang.g4 exists'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 5,
+      "points": 1
+    },
+    {
+      "name": "02. ANTLR Compilation",
+      "setup": "mvn clean antlr4:antlr4 compile -q",
+      "run": "test -f src/main/java/edu/eam/ingesoft/tlf/RoboLangLexer.java && test -f src/main/java/edu/eam/ingesoft/tlf/RoboLangParser.java && echo 'PASS'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 4
+    },
+    {
+      "name": "03. Basic Commands (8 tests)",
+      "setup": "mvn clean antlr4:antlr4 compile test-compile -q",
+      "run": "mvn test -Dtest=RoboLangReflectionTest 2>&1 | grep -E 'Tests run: [0-9]+' | head -1 | sed 's/.*Tests run: \\([0-9]*\\).*/\\1/' | awk '$1 >= 8 {print \"PASS\"}'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 8
+    },
+    {
+      "name": "04. REPEAT Structures (5 tests)",
+      "setup": "",
+      "run": "mvn test -Dtest=RoboLangReflectionTest 2>&1 | grep -E 'Tests run: [0-9]+' | head -1 | sed 's/.*Tests run: \\([0-9]*\\).*/\\1/' | awk '$1 >= 13 {print \"PASS\"}'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 5
+    },
+    {
+      "name": "05. IF Conditionals (9 tests)",
+      "setup": "",
+      "run": "mvn test -Dtest=RoboLangReflectionTest 2>&1 | grep -E 'Tests run: [0-9]+' | head -1 | sed 's/.*Tests run: \\([0-9]*\\).*/\\1/' | awk '$1 >= 22 {print \"PASS\"}'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 9
+    },
+    {
+      "name": "06. IF-ELSE Structures (3 tests)",
+      "setup": "",
+      "run": "mvn test -Dtest=RoboLangReflectionTest 2>&1 | grep -E 'Tests run: [0-9]+' | head -1 | sed 's/.*Tests run: \\([0-9]*\\).*/\\1/' | awk '$1 >= 25 {print \"PASS\"}'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 3
+    },
+    {
+      "name": "07. Logical Operators (12 tests)",
+      "setup": "",
+      "run": "mvn test -Dtest=RoboLangReflectionTest 2>&1 | grep -E 'Tests run: [0-9]+' | head -1 | sed 's/.*Tests run: \\([0-9]*\\).*/\\1/' | awk '$1 >= 37 {print \"PASS\"}'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 12
+    },
+    {
+      "name": "08. WHILE Loops (5 tests)",
+      "setup": "",
+      "run": "mvn test -Dtest=RoboLangReflectionTest 2>&1 | grep -E 'Tests run: [0-9]+' | head -1 | sed 's/.*Tests run: \\([0-9]*\\).*/\\1/' | awk '$1 >= 42 {print \"PASS\"}'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 5
+    },
+    {
+      "name": "09. Complex Combinations (4 tests)",
+      "setup": "",
+      "run": "mvn test -Dtest=RoboLangReflectionTest 2>&1 | grep -E 'Tests run: [0-9]+' | head -1 | sed 's/.*Tests run: \\([0-9]*\\).*/\\1/' | awk '$1 >= 46 {print \"PASS\"}'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 4
+    },
+    {
+      "name": "10. Comments (5 tests)",
+      "setup": "",
+      "run": "mvn test -Dtest=RoboLangReflectionTest 2>&1 | grep -E 'Tests run: [0-9]+' | head -1 | sed 's/.*Tests run: \\([0-9]*\\).*/\\1/' | awk '$1 >= 51 {print \"PASS\"}'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 5
+    },
+    {
+      "name": "11. Invalid Syntax Errors (48 tests)",
+      "setup": "",
+      "run": "mvn test -Dtest=RoboLangReflectionTest 2>&1 | grep 'Tests run: 99, Failures: 0, Errors: 0' && echo 'PASS'",
+      "input": "",
+      "output": "PASS",
+      "comparison": "included",
+      "timeout": 30,
+      "points": 44
+    }
+  ]
+}

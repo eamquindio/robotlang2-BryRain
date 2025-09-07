@@ -1,0 +1,460 @@
+ejemplos:
+  # ========== CASOS VÁLIDOS ==========
+  
+  # --- Comandos Simples ---
+  - nombre: "Comando UP simple"
+    valido: true
+    texto: "UP;"
+    
+  - nombre: "Comando DOWN simple"
+    valido: true
+    texto: "DOWN;"
+    
+  - nombre: "Comando LEFT simple"
+    valido: true
+    texto: "LEFT;"
+    
+  - nombre: "Comando RIGHT simple"
+    valido: true
+    texto: "RIGHT;"
+    
+  - nombre: "Comando PENUP"
+    valido: true
+    texto: "PENUP;"
+    
+  - nombre: "Comando PENDOWN"
+    valido: true
+    texto: "PENDOWN;"
+    
+  - nombre: "Secuencia de movimientos"
+    valido: true
+    texto: "UP; DOWN; LEFT; RIGHT;"
+    
+  - nombre: "Secuencia mixta de comandos"
+    valido: true
+    texto: "PENDOWN; UP; RIGHT; LEFT; PENUP;"
+    
+  # --- Estructuras REPEAT ---
+  - nombre: "REPEAT simple con un comando"
+    valido: true
+    texto: "REPEAT 5 { UP; }"
+    
+  - nombre: "REPEAT con múltiples comandos"
+    valido: true
+    texto: "REPEAT 3 { UP; RIGHT; DOWN; LEFT; }"
+    
+  - nombre: "REPEAT con número grande"
+    valido: true
+    texto: "REPEAT 100 { UP; }"
+    
+  - nombre: "REPEAT anidado"
+    valido: true
+    texto: "REPEAT 2 { REPEAT 3 { UP; } RIGHT; }"
+    
+  - nombre: "REPEAT con comandos de pluma"
+    valido: true
+    texto: "REPEAT 4 { PENDOWN; UP; PENUP; }"
+    
+  # --- Condicionales IF ---
+  - nombre: "IF simple con sensor numérico igual"
+    valido: true
+    texto: "IF (DIST = 10) { UP; }"
+    
+  - nombre: "IF con sensor numérico menor"
+    valido: true
+    texto: "IF (TEMP < 25) { LEFT; }"
+    
+  - nombre: "IF con sensor numérico mayor"
+    valido: true
+    texto: "IF (LIGHT > 50) { RIGHT; }"
+    
+  - nombre: "IF con sensor numérico menor o igual"
+    valido: true
+    texto: "IF (BATTERY <= 20) { PENUP; }"
+    
+  - nombre: "IF con sensor numérico mayor o igual"
+    valido: true
+    texto: "IF (DIST >= 100) { DOWN; }"
+    
+  - nombre: "IF con sensor numérico diferente"
+    valido: true
+    texto: "IF (TEMP != 30) { UP; }"
+    
+  - nombre: "IF con sensor booleano true"
+    valido: true
+    texto: "IF (OBSTACLE = true) { LEFT; }"
+    
+  - nombre: "IF con sensor booleano false"
+    valido: true
+    texto: "IF (OBSTACLE = false) { RIGHT; }"
+    
+  - nombre: "IF con sensor booleano diferente"
+    valido: true
+    texto: "IF (OBSTACLE != true) { UP; }"
+    
+  # --- Condicionales IF-ELSE ---
+  - nombre: "IF-ELSE simple"
+    valido: true
+    texto: "IF (DIST < 5) { LEFT; } ELSE { UP; }"
+    
+  - nombre: "IF-ELSE con múltiples comandos"
+    valido: true
+    texto: "IF (OBSTACLE = true) { LEFT; DOWN; } ELSE { UP; RIGHT; }"
+    
+  - nombre: "IF-ELSE anidado"
+    valido: true
+    texto: "IF (BATTERY > 50) { IF (OBSTACLE = false) { UP; } ELSE { LEFT; } } ELSE { PENUP; }"
+    
+  # --- Operadores Lógicos ---
+  - nombre: "Condición con AND simple"
+    valido: true
+    texto: "IF (DIST > 10 AND TEMP < 30) { UP; }"
+    
+  - nombre: "Condición con OR simple"
+    valido: true
+    texto: "IF (BATTERY < 20 OR LIGHT > 80) { PENUP; }"
+    
+  - nombre: "Condición con NOT simple"
+    valido: true
+    texto: "IF (NOT (OBSTACLE = true)) { UP; }"
+    
+  - nombre: "Condición con NOT y paréntesis"
+    valido: true
+    texto: "IF (NOT (DIST < 5)) { RIGHT; }"
+    
+  - nombre: "Condición con múltiples AND"
+    valido: true
+    texto: "IF (DIST > 10 AND TEMP < 30 AND LIGHT > 50) { UP; }"
+    
+  - nombre: "Condición con múltiples OR"
+    valido: true
+    texto: "IF (BATTERY < 20 OR TEMP > 40 OR LIGHT < 10) { PENUP; }"
+    
+  - nombre: "Condición con AND y OR (precedencia)"
+    valido: true
+    texto: "IF (DIST > 10 AND TEMP < 30 OR LIGHT > 80) { UP; }"
+    
+  - nombre: "Condición con OR y AND con paréntesis"
+    valido: true
+    texto: "IF ((DIST > 10 OR TEMP < 30) AND LIGHT > 50) { UP; }"
+    
+  - nombre: "Condición con NOT y AND"
+    valido: true
+    texto: "IF (NOT (OBSTACLE = true) AND BATTERY > 20) { UP; }"
+    
+  - nombre: "Condición con NOT y OR"
+    valido: true
+    texto: "IF (NOT (DIST < 5) OR TEMP > 30) { LEFT; }"
+    
+  - nombre: "Condición compleja con todos los operadores"
+    valido: true
+    texto: "IF (NOT (OBSTACLE = true) AND (BATTERY > 20 OR LIGHT < 50)) { UP; }"
+    
+  - nombre: "Múltiples NOT anidados"
+    valido: true
+    texto: "IF (NOT NOT (OBSTACLE = true)) { UP; }"
+    
+  # --- Bucles WHILE ---
+  - nombre: "WHILE simple"
+    valido: true
+    texto: "WHILE (BATTERY > 20) { UP; }"
+    
+  - nombre: "WHILE con múltiples comandos"
+    valido: true
+    texto: "WHILE (LIGHT < 90) { UP; RIGHT; DOWN; LEFT; }"
+    
+  - nombre: "WHILE con condición compleja"
+    valido: true
+    texto: "WHILE (BATTERY > 20 AND NOT (OBSTACLE = true)) { UP; RIGHT; }"
+    
+  - nombre: "WHILE anidado"
+    valido: true
+    texto: "WHILE (BATTERY > 50) { WHILE (LIGHT < 80) { UP; } RIGHT; }"
+    
+  - nombre: "WHILE con IF dentro"
+    valido: true
+    texto: "WHILE (BATTERY > 20) { IF (OBSTACLE = true) { LEFT; } ELSE { UP; } }"
+    
+  # --- Combinaciones Complejas ---
+  - nombre: "REPEAT dentro de IF"
+    valido: true
+    texto: "IF (BATTERY > 50) { REPEAT 3 { UP; } }"
+    
+  - nombre: "IF dentro de REPEAT"
+    valido: true
+    texto: "REPEAT 5 { IF (OBSTACLE = true) { LEFT; } ELSE { UP; } }"
+    
+  - nombre: "WHILE dentro de REPEAT"
+    valido: true
+    texto: "REPEAT 2 { WHILE (LIGHT < 80) { UP; } }"
+    
+  - nombre: "Programa complejo con múltiples estructuras"
+    valido: true
+    texto: |
+      PENDOWN;
+      REPEAT 3 {
+        IF (OBSTACLE = false) {
+          UP;
+        } ELSE {
+          LEFT;
+        }
+      }
+      WHILE (BATTERY > 10) {
+        IF (LIGHT > 50 AND TEMP < 30) {
+          RIGHT;
+        } ELSE {
+          DOWN;
+        }
+      }
+      PENUP;
+    
+  # --- Comentarios ---
+  - nombre: "Programa con comentario simple"
+    valido: true
+    texto: "/* Este es un comentario */ UP;"
+    
+  - nombre: "Programa con comentario multilínea"
+    valido: true
+    texto: |
+      /* Este es un comentario
+         que ocupa varias líneas */
+      UP; RIGHT;
+    
+  - nombre: "Comentario entre comandos"
+    valido: true
+    texto: "UP; /* Giramos */ LEFT; /* Avanzamos */ UP;"
+    
+  - nombre: "Comentario dentro de estructura"
+    valido: true
+    texto: "IF (OBSTACLE = true) { /* Evitamos obstáculo */ LEFT; }"
+    
+  # --- Programa del Laberinto (caso complejo) ---
+  - nombre: "Navegación de laberinto completa"
+    valido: true
+    texto: |
+      WHILE (LIGHT < 90) {
+        /* Intentar mover a la derecha si no hay obstáculo */
+        IF (OBSTACLE = false) { RIGHT; }
+        ELSE {
+          /* Intentar mover hacia abajo si no hay obstáculo */
+          IF (OBSTACLE = false) { DOWN; }
+          ELSE {
+            /* Intentar mover a la izquierda si no hay obstáculo */
+            IF (OBSTACLE = false) { LEFT; }
+            ELSE {
+              /* Intentar mover hacia arriba si no hay obstáculo */
+              IF (OBSTACLE = false) { UP; }
+              ELSE {
+                /* CALLEJÓN SIN SALIDA:
+                   Retroceder: girar 180° y avanzar */
+                LEFT; LEFT; UP;
+              }
+            }
+          }
+        }
+      }
+    
+  # ========== CASOS INVÁLIDOS ==========
+  
+  # --- Errores de Sintaxis Básicos ---
+  - nombre: "Comando sin punto y coma"
+    valido: false
+    texto: "UP"
+    
+  - nombre: "Múltiples comandos sin punto y coma"
+    valido: false
+    texto: "UP DOWN LEFT"
+    
+  - nombre: "Punto y coma sin comando"
+    valido: false
+    texto: ";"
+    
+  - nombre: "Comando inexistente"
+    valido: false
+    texto: "JUMP;"
+    
+  - nombre: "Comando inexistente FORWARD"
+    valido: false
+    texto: "FORWARD;"
+    
+  - nombre: "Comando inexistente BACKWARD"
+    valido: false
+    texto: "BACKWARD;"
+    
+  # --- Errores en REPEAT ---
+  - nombre: "REPEAT sin llaves"
+    valido: false
+    texto: "REPEAT 5 UP;"
+    
+  - nombre: "REPEAT sin número"
+    valido: false
+    texto: "REPEAT { UP; }"
+    
+  - nombre: "REPEAT con número decimal"
+    valido: false
+    texto: "REPEAT 3.5 { UP; }"
+
+  - nombre: "REPEAT sin llave de cierre"
+    valido: false
+    texto: "REPEAT 3 { UP;"
+    
+  - nombre: "REPEAT sin llave de apertura"
+    valido: false
+    texto: "REPEAT 3 UP; }"
+    
+  # --- Errores en IF ---
+  - nombre: "IF sin paréntesis"
+    valido: false
+    texto: "IF DIST < 5 { UP; }"
+    
+  - nombre: "IF sin condición"
+    valido: false
+    texto: "IF () { UP; }"
+    
+  - nombre: "IF sin llaves"
+    valido: false
+    texto: "IF (DIST < 5) UP;"
+    
+  - nombre: "IF con paréntesis sin cerrar"
+    valido: false
+    texto: "IF (DIST < 5 { UP; }"
+    
+  - nombre: "IF con llave sin cerrar"
+    valido: false
+    texto: "IF (DIST < 5) { UP;"
+    
+  - nombre: "ELSE sin IF"
+    valido: false
+    texto: "ELSE { UP; }"
+    
+  - nombre: "ELSE sin llaves"
+    valido: false
+    texto: "IF (DIST < 5) { UP; } ELSE UP;"
+    
+  # --- Errores en WHILE ---
+  - nombre: "WHILE sin paréntesis"
+    valido: false
+    texto: "WHILE BATTERY > 20 { UP; }"
+    
+  - nombre: "WHILE sin condición"
+    valido: false
+    texto: "WHILE () { UP; }"
+    
+  - nombre: "WHILE sin llaves"
+    valido: false
+    texto: "WHILE (BATTERY > 20) UP;"
+    
+  - nombre: "WHILE con paréntesis sin cerrar"
+    valido: false
+    texto: "WHILE (BATTERY > 20 { UP; }"
+    
+  # --- Errores con Sensores ---
+  - nombre: "Sensor inexistente"
+    valido: false
+    texto: "IF (SPEED > 50) { UP; }"
+    
+  - nombre: "Sensor numérico con valor booleano"
+    valido: false
+    texto: "IF (DIST = true) { UP; }"
+    
+  - nombre: "Sensor booleano con valor numérico"
+    valido: false
+    texto: "IF (OBSTACLE = 1) { UP; }"
+    
+  - nombre: "Sensor sin operador"
+    valido: false
+    texto: "IF (DIST) { UP; }"
+    
+  - nombre: "Sensor sin valor"
+    valido: false
+    texto: "IF (DIST >) { UP; }"
+    
+  # --- Errores con Operadores ---
+  - nombre: "Operador doble igual"
+    valido: false
+    texto: "IF (DIST == 10) { UP; }"
+    
+  - nombre: "Operador inválido"
+    valido: false
+    texto: "IF (DIST <> 10) { UP; }"
+    
+  - nombre: "Operador sin operando izquierdo"
+    valido: false
+    texto: "IF (< 10) { UP; }"
+    
+  - nombre: "Operador sin operando derecho"
+    valido: false
+    texto: "IF (DIST <) { UP; }"
+    
+  # --- Errores con Operadores Lógicos ---
+  - nombre: "AND sin operando derecho"
+    valido: false
+    texto: "IF (DIST > 10 AND) { UP; }"
+    
+  - nombre: "OR sin operando izquierdo"
+    valido: false
+    texto: "IF (OR TEMP < 30) { UP; }"
+    
+  - nombre: "NOT sin expresión"
+    valido: false
+    texto: "IF (NOT) { UP; }"
+    
+  - nombre: "Operadores lógicos consecutivos"
+    valido: false
+    texto: "IF (DIST > 10 AND OR TEMP < 30) { UP; }"
+    
+  - nombre: "Mezcla incorrecta de operadores"
+    valido: false
+    texto: "IF (DIST > 10 NOT AND TEMP < 30) { UP; }"
+    
+  # --- Errores con Paréntesis ---
+  - nombre: "Paréntesis desbalanceados - más abiertos"
+    valido: false
+    texto: "IF ((DIST > 10 AND TEMP < 30) { UP; }"
+    
+  - nombre: "Paréntesis desbalanceados - más cerrados"
+    valido: false
+    texto: "IF (DIST > 10 AND TEMP < 30)) { UP; }"
+    
+  - nombre: "Paréntesis vacíos en condición"
+    valido: false
+    texto: "IF (()) { UP; }"
+    
+  # --- Errores con Valores ---
+  - nombre: "Valor no numérico"
+    valido: false
+    texto: "IF (DIST > ABC) { UP; }"
+    
+  - nombre: "Valor booleano incorrecto"
+    valido: false
+    texto: "IF (OBSTACLE = yes) { UP; }"
+    
+  - nombre: "Número con formato incorrecto"
+    valido: false
+    texto: "IF (DIST > 10.5) { UP; }"
+    
+  # --- Errores de Estructura ---
+  - nombre: "Estructura incompleta"
+    valido: false
+    texto: "IF"
+    
+  - nombre: "REPEAT incompleto"
+    valido: false
+    texto: "REPEAT"
+    
+  - nombre: "WHILE incompleto"
+    valido: false
+    texto: "WHILE"
+    
+  # --- Casos Especiales (Válidos según la gramática) ---
+  - nombre: "Programa vacío"
+    valido: true
+    texto: ""
+    
+  - nombre: "Solo espacios en blanco"
+    valido: true
+    texto: "   "
+    
+  - nombre: "Solo comentario"
+    valido: true
+    texto: "/* Solo un comentario */"

@@ -1,0 +1,121 @@
+name: GitHub Classroom Workflow
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  build:
+    name: Autograding
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+          
+      - name: Check RoboLang.g4 Grammar exists
+        run: |
+          if [ ! -f "src/main/antlr4/edu/eam/ingesoft/tlf/RoboLang.g4" ]; then
+            echo "❌ RoboLang.g4 not found in src/main/antlr4/edu/eam/ingesoft/tlf/"
+            echo "Checking for grammar file in other locations:"
+            find . -name "RoboLang.g4" -type f 2>/dev/null || echo "Grammar file not found"
+            exit 1
+          else
+            echo "✅ RoboLang.g4 found"
+            ls -la src/main/antlr4/edu/eam/ingesoft/tlf/RoboLang.g4
+          fi
+          
+      - name: Check RoboLang.yaml test cases exist
+        run: |
+          if [ ! -f "src/test/resources/RoboLang.yaml" ]; then
+            echo "❌ RoboLang.yaml not found in src/test/resources/"
+            exit 1
+          else
+            echo "✅ RoboLang.yaml test cases found"
+            echo "Total test cases: $(grep -c 'nombre:' src/test/resources/RoboLang.yaml)"
+          fi
+          
+      - name: Compile ANTLR Grammar and Java Sources
+        run: |
+          echo "🔨 Compiling ANTLR grammar and Java sources..."
+          mvn clean antlr4:antlr4 compile
+        
+      - name: Verify ANTLR generated RoboLang classes
+        run: |
+          echo "🔍 Verifying generated ANTLR classes..."
+          # Las clases se generan en src/main/java según la configuración del pom.xml
+          if [ ! -f "src/main/java/edu/eam/ingesoft/tlf/RoboLangLexer.java" ]; then
+            echo "❌ RoboLangLexer.java not generated"
+            echo "Checking possible locations:"
+            find . -name "RoboLangLexer.java" -type f 2>/dev/null || echo "File not found anywhere"
+            exit 1
+          fi
+          if [ ! -f "src/main/java/edu/eam/ingesoft/tlf/RoboLangParser.java" ]; then
+            echo "❌ RoboLangParser.java not generated"
+            echo "Checking possible locations:"
+            find . -name "RoboLangParser.java" -type f 2>/dev/null || echo "File not found anywhere"
+            exit 1
+          fi
+          echo "✅ RoboLang ANTLR classes generated successfully:"
+          ls -la src/main/java/edu/eam/ingesoft/tlf/RoboLang*.java
+          
+      - name: Run RoboLangReflectionTest
+        run: |
+          echo "🧪 Running RoboLang grammar validation tests..."
+          mvn test -Dtest=RoboLangReflectionTest
+          
+      - name: Display test results summary
+        if: always()
+        run: |
+          echo "=== ROBOLANG TEST RESULTS SUMMARY ==="
+          if [ -d "target/surefire-reports" ]; then
+            # Count test results
+            TOTAL_TESTS=$(grep -h 'tests=' target/surefire-reports/TEST-*.xml | sed 's/.*tests="\([0-9]*\)".*/\1/' | head -1)
+            FAILED_TESTS=$(grep -h 'failures=' target/surefire-reports/TEST-*.xml | sed 's/.*failures="\([0-9]*\)".*/\1/' | head -1)
+            ERRORS=$(grep -h 'errors=' target/surefire-reports/TEST-*.xml | sed 's/.*errors="\([0-9]*\)".*/\1/' | head -1)
+            
+            if [ -n "$TOTAL_TESTS" ]; then
+              PASSED_TESTS=$((TOTAL_TESTS - FAILED_TESTS - ERRORS))
+              echo "📊 Test Results:"
+              echo "   Total tests: $TOTAL_TESTS"
+              echo "   ✅ Passed: $PASSED_TESTS"
+              echo "   ❌ Failed: $FAILED_TESTS"
+              echo "   ⚠️ Errors: $ERRORS"
+              
+              # Calculate percentage
+              if [ "$TOTAL_TESTS" -gt 0 ]; then
+                PERCENTAGE=$((PASSED_TESTS * 100 / TOTAL_TESTS))
+                echo "   📈 Success rate: $PERCENTAGE%"
+              fi
+            fi
+          else
+            echo "No test reports found in target/surefire-reports/"
+          fi
+          
+      - name: Generate detailed test report
+        if: always()
+        run: |
+          mvn surefire-report:report-only || true
+          echo "Detailed test results available in target/surefire-reports/"
+        
+      - uses: education/autograding@v1
